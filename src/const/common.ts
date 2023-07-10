@@ -21,3 +21,8 @@ export const AppRoute = {
     },
   },
 };
+
+export enum LANG {
+  EN = 'EN',
+  RU = 'RU',
+}

@@ -21,6 +21,17 @@
         </a>
       </div>
       <time class="footer__year">2022</time>
+      <LangButton />
     </div>
   </footer>
 </template>
+
+<script lang="ts">
+import LangButton from './LangButton';
+
+export default {
+  components: {
+    LangButton,
+  },
+};
+</script>
