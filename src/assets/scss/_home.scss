@@ -20,6 +20,12 @@
   font-size: rem(25);
   // .menu-home__item
   &__item {
+    &:not(:last-child) {
+      margin-bottom: rem(20);
+    }
+  }
+
+  &__link {
     padding: rem(15);
     border-radius: rem(5);
     background-color: #00bc8c;
@@ -30,13 +36,6 @@
     align-items: center;
 
     cursor: pointer;
-
-    &:not(:last-child) {
-      margin-bottom: rem(20);
-    }
-  }
-
-  &__link {
   }
 
   &__lang {
