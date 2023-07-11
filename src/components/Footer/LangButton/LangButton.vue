@@ -1,5 +1,5 @@
 <template>
-  <button class="footer__lang lang" @click="toggleLang">
+  <button class="lang" @click="toggleLang" :class="className">
     <span class="lang__img-ibg">
       <svg
         v-if="currentLang === LANG.RU"
@@ -40,26 +40,29 @@
 </template>
 
 <script lang="ts">
+import { computed, defineComponent } from 'vue';
+
+import { useStore } from '@/store';
 import { LANG } from '@/const/common';
 
-export default {
-  data(): {
-    currentLang: LANG;
-    LANG: typeof LANG;
-  } {
-    return {
-      currentLang: LANG.RU,
-      LANG,
-    };
-  },
-  methods: {
-    toggleLang() {
-      if (this.currentLang === LANG.RU) {
-        this.currentLang = LANG.EN;
-      } else {
-        this.currentLang = LANG.RU;
-      }
+export default defineComponent({
+  props: {
+    className: {
+      type: String,
     },
   },
-};
+  setup() {
+    const store = useStore();
+
+    const currentLang = computed(() => store.state.currentLang);
+
+    const toggleLang = () => store.commit('toggleLang');
+
+    return {
+      LANG,
+      currentLang,
+      toggleLang,
+    };
+  },
+});
 </script>

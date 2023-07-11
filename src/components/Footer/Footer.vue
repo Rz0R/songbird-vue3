@@ -21,7 +21,7 @@
         </a>
       </div>
       <time class="footer__year">2022</time>
-      <LangButton />
+      <LangButton class-name="footer__lang" />
     </div>
   </footer>
 </template>
