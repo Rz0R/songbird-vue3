@@ -1,7 +1,17 @@
 <template>
   <main class="home">
     <div class="home__container">
-      <h1>Main</h1>
+      <MainMenu />
     </div>
   </main>
 </template>
+
+<script lang="ts">
+import MainMenu from '@/components/MainMenu';
+
+export default {
+  components: {
+    MainMenu,
+  },
+};
+</script>
