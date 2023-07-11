@@ -1,7 +1,7 @@
 <template>
   <main class="home">
     <div class="home__container">
-      <MainMenu />
+      <MainMenu class-name="home__menu" />
     </div>
   </main>
 </template>
