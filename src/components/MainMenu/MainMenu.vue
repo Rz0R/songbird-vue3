@@ -1,5 +1,5 @@
 <template>
-  <ul class="menu-home" :class="className">
+  <ul class="menu-home">
     <li v-for="item in appRoutes" :key="item.path" class="menu-home__item">
       <router-link :to="item.path" class="menu-home__link">
         {{ item.name[currentLang] }}
@@ -15,11 +15,6 @@ import { useStore } from '@/store';
 import { AppRoute } from '@/const/common';
 
 export default defineComponent({
-  props: {
-    className: {
-      type: String,
-    },
-  },
   setup() {
     const appRoutes = { ...AppRoute };
     Reflect.deleteProperty(appRoutes, 'Main');

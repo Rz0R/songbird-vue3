@@ -1,5 +1,5 @@
 <template>
-  <button class="lang" @click="toggleLang" :class="className">
+  <button class="lang" @click="toggleLang">
     <span class="lang__img-ibg">
       <svg
         v-if="currentLang === LANG.RU"
@@ -46,11 +46,6 @@ import { useStore } from '@/store';
 import { LANG } from '@/const/common';
 
 export default defineComponent({
-  props: {
-    className: {
-      type: String,
-    },
-  },
   setup() {
     const store = useStore();
 
