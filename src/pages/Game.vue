@@ -3,6 +3,7 @@
     <div class="game__container">
       <div class="game__top">
         <Categories />
+        <Score />
       </div>
     </div>
   </main>
@@ -10,10 +11,12 @@
 
 <script>
 import Categories from '@/components/Categories';
+import Score from '@/components/Score';
 
 export default {
   components: {
     Categories,
+    Score,
   },
 };
 </script>
