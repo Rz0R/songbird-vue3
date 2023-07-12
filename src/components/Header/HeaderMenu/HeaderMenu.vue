@@ -1,5 +1,5 @@
 <template>
-  <div class="header__menu menu" @click="toggleBurgerMenu">
+  <div class="menu" @click="toggleBurgerMenu">
     <button type="button" class="menu__icon icon-menu">
       <span></span>
     </button>
@@ -12,7 +12,7 @@
             active-class="menu__item_active"
             exact-active-class=""
           >
-            {{ item.name.EN }}
+            {{ item.name[currentLang] }}
           </router-link>
         </li>
       </ul>
@@ -21,16 +21,14 @@
 </template>
 
 <script lang="ts">
-import { AppRoute } from '@/const/common';
+import { defineComponent, computed } from 'vue';
 
-export default {
-  data() {
-    return {
-      appRoutes: AppRoute,
-    };
-  },
-  methods: {
-    toggleBurgerMenu(evt: MouseEvent) {
+import { AppRoute } from '@/const/common';
+import { useStore } from '@/store';
+
+export default defineComponent({
+  setup() {
+    const toggleBurgerMenu = (evt: MouseEvent) => {
       const target = evt.target as HTMLElement;
       const classList = document.documentElement.classList;
 
@@ -42,7 +40,12 @@ export default {
       if (classList.contains('menu-open') && target.closest('.menu__item')) {
         classList.remove('menu-open', 'lock');
       }
-    },
+    };
+
+    const store = useStore();
+    const currentLang = computed(() => store.state.currentLang);
+
+    return { appRoutes: AppRoute, toggleBurgerMenu, currentLang };
   },
-};
+});
 </script>
