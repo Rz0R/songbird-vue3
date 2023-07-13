@@ -1,22 +1,20 @@
 <template>
   <div class="audio-player">
-    <audio class="audio-player__audio" ref="player">
+    <audio
+      class="audio-player__audio"
+      ref="player"
+      @timeupdate="handleAudioTimeUpdate"
+      @ended="handleAudioTimeEnd"
+    >
       <source
         src="https://www.xeno-canto.org/sounds/uploaded/XIQVMQVUPP/XC518684-Grands%20corbeaux%2009012020%20Suzon.mp3"
         type="audio/mpeg"
       />
     </audio>
     <div class="audio-player__controls">
-      <PlayButton :isPlaying="isPlaying" @click="togglePlay" />
+      <PlayButton :isPlaying="isPlaying" @click="handleTogglePlayBtn" />
       <div class="audio-player__time-bar">
-        <input
-          type="range"
-          class="audio-player__time"
-          value="50"
-          min="0"
-          max="100"
-          step="0.01"
-        />
+        <TimeBar :value="timeBarValue" @input-time-bar="handleInputTimeBar" />
         <div class="audio-player__time-info">
           <div class="audio-player__volume-wrapper">
             <button class="audio-player__volume-button-ibg">
@@ -70,16 +68,19 @@
 import { defineComponent, ref } from 'vue';
 
 import PlayButton from './PlayButton';
+import TimeBar from './TimeBar';
 
 export default defineComponent({
   components: {
     PlayButton,
+    TimeBar,
   },
   setup() {
     const isPlaying = ref(false);
+    const timeBarValue = ref(0);
     const player = ref<HTMLAudioElement | null>(null);
 
-    const togglePlay = () => {
+    const handleTogglePlayBtn = () => {
       if (isPlaying.value) {
         player.value?.pause();
       } else {
@@ -88,10 +89,31 @@ export default defineComponent({
       isPlaying.value = !isPlaying.value;
     };
 
+    const handleInputTimeBar = (value: number) => {
+      if (player.value) {
+        const { duration } = player.value;
+        player.value.currentTime = (value / 100) * duration;
+      }
+    };
+
+    const handleAudioTimeUpdate = (evt: Event) => {
+      const audioEl = evt.target as HTMLAudioElement;
+      if (isNaN(audioEl.currentTime)) {
+        timeBarValue.value = 0;
+      } else {
+        timeBarValue.value = (audioEl.currentTime / audioEl.duration) * 100;
+      }
+    };
+
+    const handleAudioTimeEnd = () => (isPlaying.value = false);
     return {
       player,
       isPlaying,
-      togglePlay,
+      timeBarValue,
+      handleTogglePlayBtn,
+      handleInputTimeBar,
+      handleAudioTimeUpdate,
+      handleAudioTimeEnd,
     };
   },
 });
