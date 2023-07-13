@@ -5,6 +5,7 @@
     </div>
     <div class="question__content">
       <h3 class="question__answer">{{ DEFAULT_ANSWER }}</h3>
+      <AudioPlayer class="question__audio-player" />
     </div>
   </div>
 </template>
@@ -12,9 +13,13 @@
 <script lang="ts">
 import { defineComponent } from 'vue';
 
+import AudioPlayer from '@/components/AudioPlayer';
 import { DEFAULT_IMG, DEFAULT_ANSWER } from '@/const/game';
 
 export default defineComponent({
+  components: {
+    AudioPlayer,
+  },
   setup() {
     return {
       DEFAULT_IMG,
