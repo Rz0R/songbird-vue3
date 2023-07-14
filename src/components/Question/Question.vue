@@ -5,7 +5,10 @@
     </div>
     <div class="question__content">
       <h3 class="question__answer">{{ DEFAULT_ANSWER }}</h3>
-      <AudioPlayer class="question__audio-player" />
+      <AudioPlayer
+        class="question__audio-player"
+        src="https://www.xeno-canto.org/sounds/uploaded/XIQVMQVUPP/XC518684-Grands%20corbeaux%2009012020%20Suzon.mp3"
+      />
     </div>
   </div>
 </template>

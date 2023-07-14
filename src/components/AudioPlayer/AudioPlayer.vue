@@ -7,10 +7,7 @@
       @ended="handleAudioTimeEnd"
       @loadedmetadata="handleLoadMetaData"
     >
-      <source
-        src="https://www.xeno-canto.org/sounds/uploaded/XIQVMQVUPP/XC518684-Grands%20corbeaux%2009012020%20Suzon.mp3"
-        type="audio/mpeg"
-      />
+      <source :src="src" type="audio/mpeg" />
     </audio>
     <div class="audio-player__controls">
       <PlayButton :isPlaying="isPlaying" @click="handleTogglePlayBtn" />
@@ -35,7 +32,7 @@
 </template>
 
 <script lang="ts">
-import { defineComponent, ref } from 'vue';
+import { defineComponent, PropType, ref } from 'vue';
 
 import PlayButton from './PlayButton';
 import TimeBar from './TimeBar';
@@ -48,6 +45,12 @@ export default defineComponent({
     TimeBar,
     VolumeBar,
     TimeInfo,
+  },
+  props: {
+    src: {
+      type: String as PropType<string>,
+      required: true,
+    },
   },
   setup() {
     const isPlaying = ref(false);
@@ -133,6 +136,11 @@ export default defineComponent({
       }
     };
 
+    const stop = () => {
+      isPlaying.value = false;
+      player.value?.pause();
+    };
+
     return {
       player,
       isPlaying,
@@ -149,6 +157,7 @@ export default defineComponent({
       handleInputVolumeBar,
       handleToggleMuteVolume,
       handleLoadMetaData,
+      stop,
     };
   },
 });
