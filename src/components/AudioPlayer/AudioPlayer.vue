@@ -16,43 +16,12 @@
       <div class="audio-player__time-bar">
         <TimeBar :value="timeBarValue" @input-time-bar="handleInputTimeBar" />
         <div class="audio-player__time-info">
-          <div class="audio-player__volume-wrapper">
-            <button class="audio-player__volume-button-ibg">
-              <svg height="100%" viewBox="0 0 36 36" width="100%">
-                <defs>
-                  <clipPath>
-                    <path
-                      d="m 14.35,-0.14 -5.86,5.86 20.73,20.78 5.86,-5.91 z"
-                    ></path>
-                    <path
-                      d="M 7.07,6.87 -1.11,15.33 19.61,36.11 27.80,27.60 z"
-                    ></path>
-                    <path
-                      d="M 9.09,5.20 6.47,7.88 26.82,28.77 29.66,25.99 z"
-                      transform="translate(0, 0)"
-                    ></path>
-                  </clipPath>
-                  <clipPath>
-                    <path
-                      d="m -11.45,-15.55 -4.44,4.51 20.45,20.94 4.55,-4.66 z"
-                      transform="translate(0, 0)"
-                    ></path>
-                  </clipPath>
-                </defs>
-                <path
-                  d="M8,21 L12,21 L17,26 L17,10 L12,15 L8,15 L8,21 Z M19,14 L19,22 C20.48,21.32 21.5,19.77 21.5,18 C21.5,16.26 20.48,14.74 19,14 ZM19,11.29 C21.89,12.15 24,14.83 24,18 C24,21.17 21.89,23.85 19,24.71 L19,26.77 C23.01,25.86 26,22.28 26,18 C26,13.72 23.01,10.14 19,9.23 L19,11.29 Z"
-                ></path>
-              </svg>
-            </button>
-            <input
-              type="range"
-              class="audio-player__volume-bar"
-              value="50"
-              min="0"
-              max="100"
-              step="0.01"
-            />
-          </div>
+          <VolumeBar
+            :value="volumeBarValue"
+            :isMute="isMute"
+            @input-volume-bar="handleInputVolumeBar"
+            @toggle-mute="handleToggleMuteVolume"
+          />
           <div class="audio-player__time-info-wrapper">
             <span class="audio-player__current-time">00:00</span>
             /
@@ -69,15 +38,19 @@ import { defineComponent, ref } from 'vue';
 
 import PlayButton from './PlayButton';
 import TimeBar from './TimeBar';
+import VolumeBar from './VolumeBar';
 
 export default defineComponent({
   components: {
     PlayButton,
     TimeBar,
+    VolumeBar,
   },
   setup() {
     const isPlaying = ref(false);
     const timeBarValue = ref(0);
+    const volumeBarValue = ref(50);
+    const isMute = ref(false);
     const player = ref<HTMLAudioElement | null>(null);
 
     const handleTogglePlayBtn = () => {
@@ -106,14 +79,60 @@ export default defineComponent({
     };
 
     const handleAudioTimeEnd = () => (isPlaying.value = false);
+
+    const handleInputVolumeBar = (value: number) => {
+      if (!player.value) return;
+      player.value.volume = value / 100;
+      volumeBarValue.value = value;
+      if (value === 0 && !player.value.muted) {
+        player.value.muted = true;
+        isMute.value = true;
+      } else if (player.value.muted) {
+        player.value.muted = false;
+        isMute.value = false;
+      }
+    };
+
+    const unmuteVolume = () => {
+      if (!player.value) return;
+      player.value.muted = false;
+      if (player.value.volume === 0) {
+        player.value.volume = 0.5;
+        volumeBarValue.value = 50;
+      } else {
+        volumeBarValue.value = player.value.volume * 100;
+      }
+      isMute.value = false;
+    };
+
+    const muteVolume = () => {
+      if (!player.value) return;
+      player.value.muted = true;
+      isMute.value = true;
+      volumeBarValue.value = 0;
+    };
+
+    const handleToggleMuteVolume = () => {
+      if (!player.value) return;
+      if (player.value.muted) {
+        unmuteVolume();
+      } else {
+        muteVolume();
+      }
+    };
+
     return {
       player,
       isPlaying,
       timeBarValue,
+      volumeBarValue,
+      isMute,
       handleTogglePlayBtn,
       handleInputTimeBar,
       handleAudioTimeUpdate,
       handleAudioTimeEnd,
+      handleInputVolumeBar,
+      handleToggleMuteVolume,
     };
   },
 });
