@@ -22,11 +22,11 @@
             @input-volume-bar="handleInputVolumeBar"
             @toggle-mute="handleToggleMuteVolume"
           />
-          <div class="audio-player__time-info-wrapper">
-            <span class="audio-player__current-time">00:00</span>
-            /
-            <span class="audio-player__total-time">00:30</span>
-          </div>
+          <TimeInfo
+            :current-time="currentTime"
+            :duration="duration"
+            :is-loading="isLoading"
+          />
         </div>
       </div>
     </div>
@@ -34,24 +34,36 @@
 </template>
 
 <script lang="ts">
-import { defineComponent, ref } from 'vue';
+import { defineComponent, onMounted, ref } from 'vue';
 
 import PlayButton from './PlayButton';
 import TimeBar from './TimeBar';
 import VolumeBar from './VolumeBar';
+import TimeInfo from './TimeInfo';
 
 export default defineComponent({
   components: {
     PlayButton,
     TimeBar,
     VolumeBar,
+    TimeInfo,
   },
   setup() {
     const isPlaying = ref(false);
     const timeBarValue = ref(0);
     const volumeBarValue = ref(50);
     const isMute = ref(false);
+    const currentTime = ref(0);
+    const duration = ref(0);
     const player = ref<HTMLAudioElement | null>(null);
+    const isLoading = ref(true);
+
+    onMounted(() => {
+      player.value?.addEventListener('loadedmetadata', (evt: Event) => {
+        isLoading.value = false;
+        duration.value = (evt.target as HTMLAudioElement).duration;
+      });
+    });
 
     const handleTogglePlayBtn = () => {
       if (isPlaying.value) {
@@ -75,6 +87,7 @@ export default defineComponent({
         timeBarValue.value = 0;
       } else {
         timeBarValue.value = (audioEl.currentTime / audioEl.duration) * 100;
+        currentTime.value = audioEl.currentTime;
       }
     };
 
@@ -127,6 +140,9 @@ export default defineComponent({
       timeBarValue,
       volumeBarValue,
       isMute,
+      currentTime,
+      duration,
+      isLoading,
       handleTogglePlayBtn,
       handleInputTimeBar,
       handleAudioTimeUpdate,
