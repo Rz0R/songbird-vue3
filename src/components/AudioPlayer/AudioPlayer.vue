@@ -5,6 +5,7 @@
       ref="player"
       @timeupdate="handleAudioTimeUpdate"
       @ended="handleAudioTimeEnd"
+      @loadedmetadata="handleLoadMetaData"
     >
       <source
         src="https://www.xeno-canto.org/sounds/uploaded/XIQVMQVUPP/XC518684-Grands%20corbeaux%2009012020%20Suzon.mp3"
@@ -34,7 +35,7 @@
 </template>
 
 <script lang="ts">
-import { defineComponent, onMounted, ref } from 'vue';
+import { defineComponent, ref } from 'vue';
 
 import PlayButton from './PlayButton';
 import TimeBar from './TimeBar';
@@ -58,12 +59,10 @@ export default defineComponent({
     const player = ref<HTMLAudioElement | null>(null);
     const isLoading = ref(true);
 
-    onMounted(() => {
-      player.value?.addEventListener('loadedmetadata', (evt: Event) => {
-        isLoading.value = false;
-        duration.value = (evt.target as HTMLAudioElement).duration;
-      });
-    });
+    const handleLoadMetaData = (evt: Event) => {
+      isLoading.value = false;
+      duration.value = (evt.target as HTMLAudioElement).duration;
+    };
 
     const handleTogglePlayBtn = () => {
       if (isPlaying.value) {
@@ -149,6 +148,7 @@ export default defineComponent({
       handleAudioTimeEnd,
       handleInputVolumeBar,
       handleToggleMuteVolume,
+      handleLoadMetaData,
     };
   },
 });
