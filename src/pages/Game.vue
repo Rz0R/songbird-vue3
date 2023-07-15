@@ -5,7 +5,8 @@
         <Categories />
         <Score />
       </div>
-      <Question />
+      <Question class="game__question" />
+      <Answers class="game__question" />
     </div>
   </main>
 </template>
@@ -14,12 +15,14 @@
 import Categories from '@/components/Categories';
 import Score from '@/components/Score';
 import Question from '@/components/Question';
+import Answers from '@/components/Answers';
 
 export default {
   components: {
     Categories,
     Score,
     Question,
+    Answers,
   },
 };
 </script>
