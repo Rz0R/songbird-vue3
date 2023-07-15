@@ -1,14 +1,6 @@
 <template>
-  <div class="game__answers answers">
-    <ul class="answers__list">
-      <li class="answers__item _correct"><span></span> Ворон</li>
-      <li class="answers__item _error"><span></span> Журавль</li>
-      <li class="answers__item"><span></span> Ласточка</li>
-      <li class="answers__item"><span></span> Козодой</li>
-      <li class="answers__item"><span></span> Кукушка</li>
-      <li class="answers__item"><span></span> Синица</li>
-    </ul>
-
+  <div class="answers">
+    <AnswerList :answer-list="[]" />
     <div class="answers__description">
       <div class="answers__question question question_with-description">
         <div class="question__img-ibg">
@@ -39,11 +31,13 @@
 <script lang="ts">
 import { defineComponent } from 'vue';
 
+import AnswerList from './AnswerList';
 import AudioPlayer from '@/components/AudioPlayer';
 
 export default defineComponent({
   components: {
     AudioPlayer,
+    AnswerList,
   },
   setup() {
     return {};
