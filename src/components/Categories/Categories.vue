@@ -1,12 +1,12 @@
 <template>
   <ul class="game__categories categories">
     <li
-      v-for="(item, idx) in categories[currentLang]"
-      :key="item"
+      v-for="{ value, isActive } in categories"
+      :key="value"
       class="categories__item"
-      :class="idx === gameRound ? '_active' : ''"
+      :class="{ _active: isActive }"
     >
-      {{ item }}
+      {{ value }}
     </li>
   </ul>
 </template>
@@ -15,19 +15,19 @@
 import { computed, defineComponent } from 'vue';
 
 import { useStore } from '@/store';
-import { categories } from '@/const/birdsData';
+import { CategoryType } from '@/types/game';
 
 export default defineComponent({
   setup() {
-    const gameRound = 0;
-
     const store = useStore();
     const currentLang = computed(() => store.state.currentLang);
+    const categories = computed(
+      () => store.getters['game/getCategories'] as CategoryType[]
+    );
 
     return {
       currentLang,
       categories,
-      gameRound,
     };
   },
 });

@@ -1,9 +1,10 @@
 import { InjectionKey } from 'vue';
 import { createStore, useStore as baseUseStore, Store } from 'vuex';
 
+import { gameModule } from './gameModule';
 import { LANG } from '@/const/common';
 
-type State = {
+export type State = {
   currentLang: LANG;
 };
 
@@ -22,7 +23,9 @@ export const store = createStore<State>({
     },
   },
   actions: {},
-  modules: {},
+  modules: {
+    game: gameModule,
+  },
 });
 
 export const key: InjectionKey<Store<State>> = Symbol();

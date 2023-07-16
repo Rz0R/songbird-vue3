@@ -23,3 +23,5 @@ export type AnswerDescriptionType = {
     duration: number;
   };
 };
+
+export type CategoryType = { isActive: boolean; value: string };
