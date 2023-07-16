@@ -1,4 +1,5 @@
 import { LANG } from './common';
+import { AnswerDescriptionType } from '@/types/game';
 
 export const categories = {
   [LANG.RU]: [
@@ -19,7 +20,7 @@ export const categories = {
   ],
 };
 
-export const birdsData = [
+export const birdsData: AnswerDescriptionType[][] = [
   [
     {
       id: 1,
