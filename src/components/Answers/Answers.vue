@@ -1,18 +1,19 @@
 <template>
   <div class="answers">
     <AnswerList />
-    <AnswerDescription v-if="false" :answer-description="birdDescriptions" />
-    <AnswerInstruction />
+    <AnswerDescription v-if="description" :answer-description="description" />
+    <AnswerInstruction v-else />
   </div>
 </template>
 
 <script lang="ts">
-import { defineComponent } from 'vue';
+import { computed, defineComponent } from 'vue';
 
 import AnswerList from './AnswerList';
 import AnswerDescription from './AnswerDescription';
 import AnswerInstruction from './AnswerInstruction';
-import { birdsData } from '@/const/birdsData';
+import { useStore } from '@/store';
+import { AnswerDescriptionType } from '@/types/game';
 
 export default defineComponent({
   components: {
@@ -21,9 +22,18 @@ export default defineComponent({
     AnswerInstruction,
   },
   setup() {
-    const birdDescriptions = birdsData[1][3];
+    const store = useStore();
+    const description = computed(
+      () =>
+        store.getters[
+          'game/getCurrentDescription'
+        ] as AnswerDescriptionType | null
+    );
+
+    console.log(description);
+
     return {
-      birdDescriptions,
+      description,
     };
   },
 });

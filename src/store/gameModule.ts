@@ -24,6 +24,7 @@ export type GameModuleState = {
   score: number;
   maxRoundPoints: number;
   penaltyPoints: number;
+  currentDescriptionId: number | null;
 };
 
 export const gameModule: Module<GameModuleState, RootState> = {
@@ -35,6 +36,7 @@ export const gameModule: Module<GameModuleState, RootState> = {
     score: 0,
     maxRoundPoints: 5,
     penaltyPoints: 0,
+    currentDescriptionId: null,
   }),
   getters: {
     getCategories: (state, getters, rootState): CategoryType[] => {
@@ -61,9 +63,16 @@ export const gameModule: Module<GameModuleState, RootState> = {
       }
       return state.userAnswers;
     },
+    getCurrentDescription: (state) => {
+      if (state.currentDescriptionId === null) return null;
+      return birdsData[state.round].find(
+        (answer) => answer.id === state.currentDescriptionId
+      );
+    },
   },
   mutations: {
     updateUserAnswers: (state, id: number) => {
+      state.currentDescriptionId = id;
       if (state.isWin) return;
       if (state.userAnswers === null) return;
 
