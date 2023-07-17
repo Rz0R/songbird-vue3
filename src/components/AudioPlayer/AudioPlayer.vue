@@ -6,9 +6,8 @@
       @timeupdate="handleAudioTimeUpdate"
       @ended="handleAudioTimeEnd"
       @loadedmetadata="handleLoadMetaData"
-    >
-      <source :src="src" type="audio/mpeg" />
-    </audio>
+      :src="src"
+    />
     <div class="audio-player__controls">
       <PlayButton :isPlaying="isPlaying" @click="handleTogglePlayBtn" />
       <div class="audio-player__time-bar">
@@ -32,7 +31,7 @@
 </template>
 
 <script lang="ts">
-import { defineComponent, PropType, ref } from 'vue';
+import { defineComponent, PropType, ref, watch } from 'vue';
 
 import PlayButton from './PlayButton';
 import TimeBar from './TimeBar';
@@ -52,7 +51,7 @@ export default defineComponent({
       required: true,
     },
   },
-  setup() {
+  setup(props) {
     const isPlaying = ref(false);
     const timeBarValue = ref(0);
     const volumeBarValue = ref(50);
@@ -140,6 +139,11 @@ export default defineComponent({
       isPlaying.value = false;
       player.value?.pause();
     };
+
+    watch(
+      () => props.src,
+      () => (isPlaying.value = false)
+    );
 
     return {
       player,

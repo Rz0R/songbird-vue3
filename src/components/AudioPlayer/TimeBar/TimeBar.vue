@@ -4,7 +4,7 @@
     @input="handleInputPBar"
     type="range"
     class="audio-player__time"
-    :value="value"
+    :value="isNaN(value) ? 0 : value"
     min="0"
     max="100"
     step="0.01"
