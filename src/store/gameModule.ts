@@ -1,13 +1,15 @@
 import { Module } from 'vuex';
-import { State as RootState } from './index';
 
-import { categories } from '@/const/birdsData';
-import { AnswerType, AnswerDescriptionType, CategoryType } from '@/types/game';
+import { State as RootState } from './index';
+import { birdsData, categories } from '@/const/birdsData';
+import { AnswerDescriptionType, AnswerType, CategoryType } from '@/types/game';
+import { getRandomInt } from '@/utils/common';
+import { ANSWER } from '@/const/game';
 
 type GameModuleState = {
   round: number;
   isWin: boolean;
-  userAnswers: AnswerType | null;
+  userAnswers: AnswerType[] | null;
   currentQuestion: AnswerDescriptionType | null;
   score: number;
   maxRoundPoints: number;
@@ -32,6 +34,17 @@ export const gameModule: Module<GameModuleState, RootState> = {
         isActive: idx === state.round,
       }));
     },
+    getUserAnswers: (state, getters, rootState) => {
+      if (state.userAnswers === null) {
+        state.userAnswers = birdsData[state.round].map(({ id, name }) => ({
+          id,
+          value: name[rootState.currentLang],
+          answer: ANSWER.NO_ANSWER,
+        }));
+      }
+      return state.userAnswers;
+    },
   },
+  mutations: {},
   namespaced: true,
 };

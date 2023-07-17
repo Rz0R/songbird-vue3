@@ -2,8 +2,9 @@ import { ANSWER } from '@/const/game';
 import { LANG } from '@/const/common';
 
 export type AnswerType = {
+  id: number;
   value: string;
-  answer: keyof typeof ANSWER;
+  answer: ANSWER;
 };
 
 export type AnswerDescriptionType = {

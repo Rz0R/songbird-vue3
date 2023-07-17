@@ -1,6 +1,6 @@
 <template>
   <div class="answers">
-    <AnswerList :answer-list="[]" />
+    <AnswerList />
     <AnswerDescription v-if="false" :answer-description="birdDescriptions" />
     <AnswerInstruction />
   </div>
