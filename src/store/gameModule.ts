@@ -6,6 +6,16 @@ import { AnswerDescriptionType, AnswerType, CategoryType } from '@/types/game';
 import { getRandomInt } from '@/utils/common';
 import { ANSWER } from '@/const/game';
 
+const updateUserAnswers = (items: AnswerType[], update: AnswerType) => {
+  const index = items.findIndex((item) => item.id === update.id);
+
+  if (index === -1) {
+    return items;
+  }
+
+  return [...items.slice(0, index), update, ...items.slice(index + 1)];
+};
+
 export type GameModuleState = {
   round: number;
   isWin: boolean;
@@ -52,6 +62,32 @@ export const gameModule: Module<GameModuleState, RootState> = {
       return state.userAnswers;
     },
   },
-  mutations: {},
+  mutations: {
+    updateUserAnswers: (state, id: number) => {
+      if (state.isWin) return;
+      if (state.userAnswers === null) return;
+
+      let userAnswer = state.userAnswers.find((answer) => answer.id === id);
+      if (!userAnswer) return;
+
+      const currentQuestionId = state.currentQuestion?.id;
+      if (!currentQuestionId) return;
+
+      if (userAnswer.answer === ANSWER.INCORRECT) return;
+
+      userAnswer = {
+        ...userAnswer,
+        answer: id === currentQuestionId ? ANSWER.CORRECT : ANSWER.INCORRECT,
+      };
+
+      if (userAnswer.answer === ANSWER.CORRECT) {
+        state.score = state.score + state.maxRoundPoints - state.penaltyPoints;
+        state.isWin = true;
+      }
+      if (userAnswer.answer === ANSWER.INCORRECT) state.penaltyPoints++;
+
+      state.userAnswers = updateUserAnswers(state.userAnswers, userAnswer);
+    },
+  },
   namespaced: true,
 };

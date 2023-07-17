@@ -13,10 +13,9 @@ import { TRANSLATION } from '@/const/common';
 
 export default defineComponent({
   setup() {
-    const score = 0;
-
     const store = useStore();
     const currentLang = computed(() => store.state.currentLang);
+    const score = computed(() => store.state.game.score);
 
     return {
       score,

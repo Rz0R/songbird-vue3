@@ -1,5 +1,5 @@
 <template>
-  <ul class="answers__list">
+  <ul class="answers__list" @click="handleUserAnswer">
     <li
       v-for="{ id, value, answer } in answerList"
       :key="id"
@@ -29,7 +29,14 @@ export default defineComponent({
       () => store.getters['game/getUserAnswers'] as AnswerType[]
     );
 
-    return { ANSWER, answerList };
+    const handleUserAnswer = (evt: MouseEvent) => {
+      const target = evt.target as HTMLElement;
+      const id = Number(target.dataset.id);
+
+      store.commit('game/updateUserAnswers', id);
+    };
+
+    return { ANSWER, answerList, handleUserAnswer };
   },
 });
 </script>
