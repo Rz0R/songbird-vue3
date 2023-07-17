@@ -3,7 +3,10 @@ import { LANG } from '@/const/common';
 
 export type AnswerType = {
   id: number;
-  value: string;
+  value: {
+    [LANG.EN]: string;
+    [LANG.RU]: string;
+  };
   answer: ANSWER;
 };
 

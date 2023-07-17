@@ -51,11 +51,11 @@ export const gameModule: Module<GameModuleState, RootState> = {
       }
       return state.currentQuestion;
     },
-    getUserAnswers: (state, getters, rootState) => {
+    getUserAnswers: (state) => {
       if (state.userAnswers === null) {
         state.userAnswers = birdsData[state.round].map(({ id, name }) => ({
           id,
-          value: name[rootState.currentLang],
+          value: name,
           answer: ANSWER.NO_ANSWER,
         }));
       }

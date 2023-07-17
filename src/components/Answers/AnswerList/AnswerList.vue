@@ -10,7 +10,7 @@
       }"
       :data-id="id"
     >
-      <span></span> {{ value }}
+      <span></span> {{ value[currentLang] }}
     </li>
   </ul>
 </template>
@@ -29,6 +29,8 @@ export default defineComponent({
       () => store.getters['game/getUserAnswers'] as AnswerType[]
     );
 
+    const currentLang = computed(() => store.state.currentLang);
+
     const handleUserAnswer = (evt: MouseEvent) => {
       const target = evt.target as HTMLElement;
       const id = Number(target.dataset.id);
@@ -36,7 +38,7 @@ export default defineComponent({
       store.commit('game/updateUserAnswers', id);
     };
 
-    return { ANSWER, answerList, handleUserAnswer };
+    return { currentLang, ANSWER, answerList, handleUserAnswer };
   },
 });
 </script>
