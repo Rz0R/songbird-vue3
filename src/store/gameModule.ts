@@ -6,7 +6,7 @@ import { AnswerDescriptionType, AnswerType, CategoryType } from '@/types/game';
 import { getRandomInt } from '@/utils/common';
 import { ANSWER } from '@/const/game';
 
-type GameModuleState = {
+export type GameModuleState = {
   round: number;
   isWin: boolean;
   userAnswers: AnswerType[] | null;
@@ -33,6 +33,13 @@ export const gameModule: Module<GameModuleState, RootState> = {
         value: category,
         isActive: idx === state.round,
       }));
+    },
+    getQuestion: (state): AnswerDescriptionType => {
+      if (state.currentQuestion === null) {
+        const questionIdx = getRandomInt(0, birdsData[state.round].length - 1);
+        state.currentQuestion = birdsData[state.round][questionIdx];
+      }
+      return state.currentQuestion;
     },
     getUserAnswers: (state, getters, rootState) => {
       if (state.userAnswers === null) {

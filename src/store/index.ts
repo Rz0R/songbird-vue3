@@ -1,17 +1,18 @@
 import { InjectionKey } from 'vue';
 import { createStore, useStore as baseUseStore, Store } from 'vuex';
 
-import { gameModule } from './gameModule';
+import { gameModule, GameModuleState } from './gameModule';
 import { LANG } from '@/const/common';
 
 export type State = {
   currentLang: LANG;
+  game: GameModuleState;
 };
 
 export const store = createStore<State>({
   state: {
     currentLang: LANG.EN,
-  },
+  } as State,
   getters: {},
   mutations: {
     toggleLang: (state) => {
