@@ -7,6 +7,7 @@
       </div>
       <Question class="game__question" />
       <Answers class="game__question" />
+      <NextLevelButton />
     </div>
   </main>
 </template>
@@ -16,6 +17,7 @@ import Categories from '@/components/Categories';
 import Score from '@/components/Score';
 import Question from '@/components/Question';
 import Answers from '@/components/Answers';
+import NextLevelButton from '@/components/NextLevelButton';
 
 export default {
   components: {
@@ -23,6 +25,7 @@ export default {
     Score,
     Question,
     Answers,
+    NextLevelButton,
   },
 };
 </script>

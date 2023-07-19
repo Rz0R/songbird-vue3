@@ -97,6 +97,14 @@ export const gameModule: Module<GameModuleState, RootState> = {
 
       state.userAnswers = updateUserAnswers(state.userAnswers, userAnswer);
     },
+    nextRound: (state) => {
+      state.round++;
+      state.isWin = false;
+      state.userAnswers = null;
+      state.currentQuestion = null;
+      state.penaltyPoints = 0;
+      state.currentDescriptionId = null;
+    },
   },
   namespaced: true,
 };
