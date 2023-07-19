@@ -19,6 +19,7 @@ const updateUserAnswers = (items: AnswerType[], update: AnswerType) => {
 export type GameModuleState = {
   round: number;
   isWin: boolean;
+  isGameOver: boolean;
   userAnswers: AnswerType[] | null;
   currentQuestion: AnswerDescriptionType | null;
   score: number;
@@ -31,6 +32,7 @@ export const gameModule: Module<GameModuleState, RootState> = {
   state: () => ({
     round: 0,
     isWin: false,
+    isGameOver: false,
     userAnswers: null,
     currentQuestion: null,
     score: 0,
@@ -98,12 +100,16 @@ export const gameModule: Module<GameModuleState, RootState> = {
       state.userAnswers = updateUserAnswers(state.userAnswers, userAnswer);
     },
     nextRound: (state) => {
-      state.round++;
-      state.isWin = false;
-      state.userAnswers = null;
-      state.currentQuestion = null;
-      state.penaltyPoints = 0;
-      state.currentDescriptionId = null;
+      if (state.round + 1 >= birdsData.length) {
+        state.isGameOver = true;
+      } else {
+        state.round++;
+        state.isWin = false;
+        state.userAnswers = null;
+        state.currentQuestion = null;
+        state.penaltyPoints = 0;
+        state.currentDescriptionId = null;
+      }
     },
   },
   namespaced: true,
