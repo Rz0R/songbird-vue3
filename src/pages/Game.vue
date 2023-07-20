@@ -16,7 +16,7 @@
 </template>
 
 <script>
-import { defineComponent, computed } from 'vue';
+import { defineComponent, computed, onUnmounted } from 'vue';
 
 import Categories from '@/components/Categories';
 import Score from '@/components/Score';
@@ -38,6 +38,8 @@ export default defineComponent({
   setup() {
     const store = useStore();
     const isGameOver = computed(() => store.state.game.isGameOver);
+
+    onUnmounted(() => store.commit('game/restartGame'));
 
     return {
       isGameOver,

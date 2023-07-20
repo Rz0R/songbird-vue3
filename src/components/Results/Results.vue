@@ -7,7 +7,7 @@
       {{ TRANSLATION.CONGRATULATORY_MESSAGE[currentLang](score) }}
     </p>
     <MaxScore v-if="score === MAX_SCORE" />
-    <button v-else class="game-over__button">
+    <button v-else class="game-over__button" @click="handleClickTryAgain">
       {{ TRANSLATION.TRY_AGAIN[currentLang] }}
     </button>
   </div>
@@ -30,11 +30,14 @@ export default defineComponent({
     const currentLang = computed(() => store.state.currentLang);
     const score = computed(() => store.state.game.score);
 
+    const handleClickTryAgain = () => store.commit('game/restartGame');
+
     return {
       currentLang,
       score,
       TRANSLATION,
       MAX_SCORE,
+      handleClickTryAgain,
     };
   },
 });

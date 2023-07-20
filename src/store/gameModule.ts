@@ -28,17 +28,21 @@ export type GameModuleState = {
   currentDescriptionId: number | null;
 };
 
+const initialState: GameModuleState = {
+  round: 0,
+  isWin: false,
+  isGameOver: false,
+  userAnswers: null,
+  currentQuestion: null,
+  score: 0,
+  maxRoundPoints: 5,
+  penaltyPoints: 0,
+  currentDescriptionId: null,
+};
+
 export const gameModule: Module<GameModuleState, RootState> = {
   state: () => ({
-    round: 0,
-    isWin: false,
-    isGameOver: false,
-    userAnswers: null,
-    currentQuestion: null,
-    score: 0,
-    maxRoundPoints: 5,
-    penaltyPoints: 0,
-    currentDescriptionId: null,
+    ...initialState,
   }),
   getters: {
     getCategories: (state, getters, rootState): CategoryType[] => {
@@ -110,6 +114,16 @@ export const gameModule: Module<GameModuleState, RootState> = {
         state.penaltyPoints = 0;
         state.currentDescriptionId = null;
       }
+    },
+    restartGame: (state) => {
+      state.round = 0;
+      state.isWin = false;
+      state.isGameOver = false;
+      state.userAnswers = null;
+      state.currentQuestion = null;
+      state.score = 0;
+      state.penaltyPoints = 0;
+      state.currentDescriptionId = null;
     },
   },
   namespaced: true,
