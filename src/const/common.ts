@@ -35,8 +35,10 @@ export const TRANSLATION = {
     [LANG.EN]: 'Congratulations!',
   },
   CONGRATULATORY_MESSAGE: {
-    [LANG.RU]: `Вы прошли викторину и набрали {SCORE} из ${MAX_SCORE} возможных баллов.`,
-    [LANG.EN]: `You passed the quiz and scored {SCORE} out of ${MAX_SCORE} possible points.`,
+    [LANG.RU]: (score: number) =>
+      `Вы прошли викторину и набрали ${score} из ${MAX_SCORE} возможных баллов.`,
+    [LANG.EN]: (score: number) =>
+      `You passed the quiz and scored ${score} out of ${MAX_SCORE} possible points.`,
   },
   TRY_AGAIN: {
     [LANG.RU]: 'Попробовать еще раз!',
