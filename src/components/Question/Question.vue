@@ -5,13 +5,17 @@
     </div>
     <div class="question__content">
       <h3 class="question__answer">{{ answer }}</h3>
-      <AudioPlayer class="question__audio-player" :src="question.audio.src" />
+      <AudioPlayer
+        ref="player"
+        class="question__audio-player"
+        :src="question.audio.src"
+      />
     </div>
   </div>
 </template>
 
 <script lang="ts">
-import { computed, defineComponent } from 'vue';
+import { computed, defineComponent, ref, watch } from 'vue';
 
 import AudioPlayer from '@/components/AudioPlayer';
 import { DEFAULT_IMG, DEFAULT_ANSWER } from '@/const/game';
@@ -23,6 +27,8 @@ export default defineComponent({
     AudioPlayer,
   },
   setup() {
+    const player = ref<typeof AudioPlayer | null>(null);
+
     const store = useStore();
     const question = computed(
       () => store.getters['game/getQuestion'] as AnswerDescriptionType
@@ -46,7 +52,11 @@ export default defineComponent({
       }
     });
 
+    const handleStopPlayer = (value: boolean) => value && player.value?.stop();
+    watch(() => store.state.game.isWin, handleStopPlayer);
+
     return {
+      player,
       question,
       image,
       answer,
