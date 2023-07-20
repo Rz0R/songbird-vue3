@@ -14,23 +14,29 @@
 </template>
 
 <script lang="ts">
-import { computed, defineComponent } from 'vue';
+import { computed, defineComponent, onMounted } from 'vue';
 
 import MaxScore from './MaxScore';
 import { useStore } from '@/store';
 import { MAX_SCORE } from '@/const/game';
 import { TRANSLATION } from '@/const/common';
+import { useSound } from '@/hooks/useSound';
 
 export default defineComponent({
   components: {
     MaxScore,
   },
   setup() {
+    const victorySoundUrl = require('@/assets/audio/victory.mp3');
+    const [playVictorySound] = useSound(victorySoundUrl);
+
     const store = useStore();
     const currentLang = computed(() => store.state.currentLang);
     const score = computed(() => store.state.game.score);
 
     const handleClickTryAgain = () => store.commit('game/restartGame');
+
+    onMounted(playVictorySound);
 
     return {
       currentLang,

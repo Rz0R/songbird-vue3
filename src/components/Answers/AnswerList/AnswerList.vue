@@ -16,14 +16,21 @@
 </template>
 
 <script lang="ts">
-import { defineComponent, computed } from 'vue';
+import { defineComponent, computed, watch } from 'vue';
 
 import { ANSWER } from '@/const/game';
 import { useStore } from '@/store';
+import { useSound } from '@/hooks/useSound';
 import { AnswerType } from '@/types/game';
 
 export default defineComponent({
   setup() {
+    const wrongSoundUrl = require('@/assets/audio/wrong-answer.mp3');
+    const rightSoundUrl = require('@/assets/audio/right-answer.mp3');
+
+    const [playWrongSound] = useSound(wrongSoundUrl);
+    const [playRightSound] = useSound(rightSoundUrl);
+
     const store = useStore();
     const answerList = computed(
       () => store.getters['game/getUserAnswers'] as AnswerType[]
@@ -37,6 +44,13 @@ export default defineComponent({
 
       store.commit('game/updateUserAnswers', id);
     };
+
+    const handlePenaltyPointsChange = (value: number) =>
+      value > 0 && playWrongSound();
+    const handleIsWinChange = (value: boolean) => value && playRightSound();
+
+    watch(() => store.state.game.penaltyPoints, handlePenaltyPointsChange);
+    watch(() => store.state.game.isWin, handleIsWinChange);
 
     return { currentLang, ANSWER, answerList, handleUserAnswer };
   },
