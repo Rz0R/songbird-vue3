@@ -10,7 +10,7 @@
 import { computed, defineComponent } from 'vue';
 
 import AnswerList from './AnswerList';
-import AnswerDescription from './AnswerDescription';
+import AnswerDescription from '@/components/AnswerDescription';
 import AnswerInstruction from './AnswerInstruction';
 import { useStore } from '@/store';
 import { AnswerDescriptionType } from '@/types/game';

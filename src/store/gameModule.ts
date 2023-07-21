@@ -75,6 +75,16 @@ export const gameModule: Module<GameModuleState, RootState> = {
         (answer) => answer.id === state.currentDescriptionId
       );
     },
+    getAllDescriptions: (): AnswerDescriptionType[] => {
+      const flatBirdsData = birdsData.flat();
+
+      return flatBirdsData.map((item, idx) => {
+        return {
+          ...item,
+          id: idx + 1,
+        };
+      });
+    },
   },
   mutations: {
     updateUserAnswers: (state, id: number) => {
