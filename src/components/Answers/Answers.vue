@@ -30,8 +30,6 @@ export default defineComponent({
         ] as AnswerDescriptionType | null
     );
 
-    console.log(description);
-
     return {
       description,
     };
