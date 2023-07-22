@@ -5,6 +5,8 @@ export enum LANG {
   RU = 'RU',
 }
 
+export const SAVE_LANG_KEY = 'songbird-vue-3-lang';
+
 export const TRANSLATION = {
   MAIN: {
     [LANG.EN]: 'Home',
