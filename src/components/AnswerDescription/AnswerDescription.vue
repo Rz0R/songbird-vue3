@@ -12,7 +12,10 @@
           {{ answerDescription.name[currentLang] }}
         </h3>
         <h5 class="question__science-name">{{ answerDescription.species }}</h5>
-        <AudioPlayer :src="answerDescription.audio.src" />
+        <AudioPlayer
+          :src="answerDescription.audio.src"
+          :id="answerDescription.id"
+        />
       </div>
       <p class="question__description">
         {{ answerDescription.description[currentLang] }}

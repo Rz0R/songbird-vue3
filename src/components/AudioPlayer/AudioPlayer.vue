@@ -1,5 +1,5 @@
 <template>
-  <div class="audio-player">
+  <div class="audio-player" :data-player-id="id">
     <audio
       class="audio-player__audio"
       ref="player"
@@ -37,6 +37,7 @@ import PlayButton from './PlayButton';
 import TimeBar from './TimeBar';
 import VolumeBar from './VolumeBar';
 import TimeInfo from './TimeInfo';
+import useEmitter from '@/hooks/useEmitter';
 
 export default defineComponent({
   components: {
@@ -50,8 +51,13 @@ export default defineComponent({
       type: String as PropType<string>,
       required: true,
     },
+    id: {
+      type: Number as PropType<number>,
+      required: false,
+    },
   },
   setup(props) {
+    const emitter = useEmitter();
     const isPlaying = ref(false);
     const timeBarValue = ref(0);
     const volumeBarValue = ref(50);
@@ -71,6 +77,7 @@ export default defineComponent({
         player.value?.pause();
       } else {
         player.value?.play();
+        emitter.emit('play', props.id || -1);
       }
       isPlaying.value = !isPlaying.value;
     };
@@ -136,9 +143,15 @@ export default defineComponent({
     };
 
     const stop = () => {
-      isPlaying.value = false;
-      player.value?.pause();
+      if (isPlaying.value) {
+        isPlaying.value = false;
+        player.value?.pause();
+      }
     };
+
+    emitter.on('stop', ({ exceptionId }) => {
+      if (exceptionId !== props.id) stop();
+    });
 
     watch(
       () => props.src,

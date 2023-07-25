@@ -1,4 +1,6 @@
 export type Events = {
   play: number;
-  stop: number;
+  stop: {
+    exceptionId: number;
+  };
 };
