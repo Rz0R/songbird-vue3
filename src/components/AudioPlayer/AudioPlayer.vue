@@ -53,7 +53,7 @@ export default defineComponent({
     },
     id: {
       type: Number as PropType<number>,
-      required: false,
+      default: -1,
     },
   },
   setup(props) {
@@ -72,14 +72,29 @@ export default defineComponent({
       duration.value = (evt.target as HTMLAudioElement).duration;
     };
 
-    const handleTogglePlayBtn = () => {
+    const pause = () => {
       if (isPlaying.value) {
+        isPlaying.value = false;
         player.value?.pause();
-      } else {
-        player.value?.play();
-        emitter.emit('play', props.id || -1);
       }
-      isPlaying.value = !isPlaying.value;
+    };
+
+    const play = async () => {
+      try {
+        await player.value?.play();
+        isPlaying.value = true;
+        emitter.emit('play', props.id);
+      } catch (err) {
+        console.error(err);
+      }
+    };
+
+    const handleTogglePlayBtn = async () => {
+      if (isPlaying.value) {
+        pause();
+      } else {
+        await play();
+      }
     };
 
     const handleInputTimeBar = (value: number) => {
@@ -142,15 +157,8 @@ export default defineComponent({
       }
     };
 
-    const stop = () => {
-      if (isPlaying.value) {
-        isPlaying.value = false;
-        player.value?.pause();
-      }
-    };
-
     emitter.on('stop', ({ exceptionId }) => {
-      if (exceptionId !== props.id) stop();
+      if (exceptionId !== -1 && exceptionId !== props.id) pause();
     });
 
     watch(
@@ -174,7 +182,7 @@ export default defineComponent({
       handleInputVolumeBar,
       handleToggleMuteVolume,
       handleLoadMetaData,
-      stop,
+      pause,
     };
   },
 });

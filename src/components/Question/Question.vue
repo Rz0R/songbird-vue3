@@ -52,7 +52,7 @@ export default defineComponent({
       }
     });
 
-    const handleStopPlayer = (value: boolean) => value && player.value?.stop();
+    const handleStopPlayer = (value: boolean) => value && player.value?.pause();
     watch(() => store.state.game.isWin, handleStopPlayer);
 
     return {
