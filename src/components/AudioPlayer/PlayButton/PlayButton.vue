@@ -1,5 +1,5 @@
 <template>
-  <button class="audio-player__play">
+  <button class="audio-player__play" :disabled="isLoading">
     <svg
       v-if="isPlaying"
       xmlns="http://www.w3.org/2000/svg"
@@ -39,6 +39,10 @@ import { defineComponent } from 'vue';
 export default defineComponent({
   props: {
     isPlaying: {
+      type: Boolean,
+      required: true,
+    },
+    isLoading: {
       type: Boolean,
       required: true,
     },

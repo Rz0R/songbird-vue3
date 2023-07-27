@@ -9,9 +9,17 @@
       :src="src"
     />
     <div class="audio-player__controls">
-      <PlayButton :isPlaying="isPlaying" @click="handleTogglePlayBtn" />
+      <PlayButton
+        :isPlaying="isPlaying"
+        :isLoading="isLoading"
+        @click="handleTogglePlayBtn"
+      />
       <div class="audio-player__time-bar">
-        <TimeBar :value="timeBarValue" @input-time-bar="handleInputTimeBar" />
+        <TimeBar
+          :value="timeBarValue"
+          @input-time-bar="handleInputTimeBar"
+          :isLoading="isLoading"
+        />
         <div class="audio-player__time-info">
           <VolumeBar
             :value="volumeBarValue"

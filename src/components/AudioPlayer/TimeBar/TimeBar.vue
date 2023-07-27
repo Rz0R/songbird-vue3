@@ -2,6 +2,7 @@
   <input
     ref="pbBar"
     @input="handleInputPBar"
+    :disabled="isLoading"
     type="range"
     class="audio-player__time"
     :value="isNaN(value) ? 0 : value"
@@ -22,8 +23,12 @@ export default defineComponent({
       type: Number as PropType<number>,
       required: true,
     },
+    isLoading: {
+      type: Boolean,
+      required: true,
+    },
   },
-  setup(props, { emit }) {
+  setup(_props, { emit }) {
     const pbBar = ref<HTMLInputElement | null>(null);
 
     const updateBarStyle = () => pbBar.value && setBarStyle(pbBar.value);
