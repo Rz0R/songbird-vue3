@@ -27,8 +27,10 @@ export default defineComponent({
     },
   },
   setup(props) {
-    const formattedCurrentTime = ref<string>('--:--');
-    const formattedDuration = ref<string>('--:--');
+    const loadingTime = '--:--';
+
+    const formattedCurrentTime = ref<string>(loadingTime);
+    const formattedDuration = ref<string>(loadingTime);
 
     watch(
       () => props.isLoading,
@@ -36,6 +38,9 @@ export default defineComponent({
         if (!newValue) {
           formattedCurrentTime.value = formatTime(props.currentTime);
           formattedDuration.value = formatTime(props.duration);
+        } else {
+          formattedCurrentTime.value = loadingTime;
+          formattedDuration.value = loadingTime;
         }
       }
     );

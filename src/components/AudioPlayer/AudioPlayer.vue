@@ -171,7 +171,12 @@ export default defineComponent({
 
     watch(
       () => props.src,
-      () => (isPlaying.value = false)
+      () => {
+        isPlaying.value = false;
+        isLoading.value = true;
+        duration.value = 0;
+        player.value?.load();
+      }
     );
 
     return {
