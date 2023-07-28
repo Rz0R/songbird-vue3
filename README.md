@@ -1,24 +1,18 @@
-# songbird-vue3
+## Song Bird
 
-## Project setup
-```
-npm install
-```
+## About game:
 
-### Compiles and hot-reloads for development
-```
-npm run serve
-```
+Birdsong is a game where you have to guess birds based on their songs.
 
-### Compiles and minifies for production
-```
-npm run build
-```
+# [Demo](https://songbird-vue3.netlify.app/)
 
-### Lints and fixes files
-```
-npm run lint
-```
+## Tech stack:
 
-### Customize configuration
-See [Configuration Reference](https://cli.vuejs.org/config/).
+- VUE 3
+- VUEX
+- Typescript
+
+## Linters:
+
+- ESLint
+- Prettier
