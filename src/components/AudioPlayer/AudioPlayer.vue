@@ -39,7 +39,7 @@
 </template>
 
 <script lang="ts">
-import { defineComponent, PropType, ref, watch } from 'vue';
+import { defineComponent, onUnmounted, PropType, ref, watch } from 'vue';
 
 import PlayButton from './PlayButton';
 import TimeBar from './TimeBar';
@@ -165,9 +165,11 @@ export default defineComponent({
       }
     };
 
-    emitter.on('stop', ({ exceptionId }) => {
+    const handleStopOnEmitter = ({ exceptionId }: { exceptionId: number }) => {
       if (exceptionId !== -1 && exceptionId !== props.id) pause();
-    });
+    };
+
+    emitter.on('stop', handleStopOnEmitter);
 
     watch(
       () => props.src,
@@ -178,6 +180,10 @@ export default defineComponent({
         player.value?.load();
       }
     );
+
+    onUnmounted(() => {
+      emitter.off('stop', handleStopOnEmitter);
+    });
 
     return {
       player,

@@ -11,7 +11,7 @@
 </template>
 
 <script lang="ts">
-import { computed, defineComponent } from 'vue';
+import { computed, defineComponent, onUnmounted } from 'vue';
 
 import AnswerDescription from '@/components/AnswerDescription';
 import { useStore } from '@/store';
@@ -28,9 +28,14 @@ export default defineComponent({
       () => store.getters['game/getAllDescriptions']
     );
 
-    emitter.on('play', (id: number) =>
-      emitter.emit('stop', { exceptionId: id })
-    );
+    const handlePlayOnEmitter = (id: number) =>
+      emitter.emit('stop', { exceptionId: id });
+
+    emitter.on('play', handlePlayOnEmitter);
+
+    onUnmounted(() => {
+      emitter.off('play', handlePlayOnEmitter);
+    });
 
     return {
       allDescriptions,
